@@ -1,24 +1,32 @@
-<!doctype html>
-<html>
-  <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/style.css" />
-  </head>
-
-  <body>
+</head>
+<body>
     <div class="card">
-      <h1>Check Weather.!</h1>
-      <div class="search-box">
-        <input
-          type="text"
-          id="city"
-          placeholder="Enter city name"
-          onkeypress="handleEnter(event)"
-        />
-        <button onclick="getWeather()">Search</button>
-      </div>
-      <div id="weather"></div>
+        <h1>Check Weather</h1>
+        <div class="search-box">
+            <input
+                type="text"
+                id="city"
+                placeholder="Enter city name..."
+                autocomplete="off"
+            />
+            <button id="search-btn" onclick="getWeather()">
+                <span id="btn-text">Search</span>
+                <div id="btn-loader" class="loader hidden"></div>
+            </button>
+        </div>
+        
+        <div id="error-message" class="error hidden"></div>
+        <div id="weather" class="hidden"></div>
     </div>
+    
     <script src="/script.js"></script>
-  </body>
+</body>
 </html>

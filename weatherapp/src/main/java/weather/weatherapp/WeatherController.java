@@ -1,48 +1,35 @@
 package weather.weatherapp;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
 public class WeatherController {
 
+    private final RestTemplate restTemplate = new RestTemplate();
+    private final String apikey = "6baba3bd162ce04b0cf27553c5f3f1a7";
+
     @GetMapping("/weather")
-    public String getWeather(@RequestParam String city) {
+    public ResponseEntity<String> getWeather(@RequestParam String city) {
+        if (city == null || city.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("{\"error\": \"City name cannot be empty\"}");
+        }
+
         try {
-
-            String apikey = "6baba3bd162ce04b0cf27553c5f3f1a7";
-
             String url = "https://api.openweathermap.org/data/2.5/weather?q="
-                    + city + "&appid=" + apikey + "&units=metric";
+                    + city.trim() + "&appid=" + apikey + "&units=metric";
 
-            URL obj = new URL(url);
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-            con.setRequestMethod("GET");
-
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-
-            String line;
-            StringBuffer response = new StringBuffer();
-
-            while ((line = in.readLine()) != null) {
-                response.append(line);
-            }
-
-            in.close();
-
-            return response.toString();
-
+            String response = restTemplate.getForObject(url, String.class);
+            return ResponseEntity.ok(response);
+            
+        } catch (HttpClientErrorException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsString());
         } catch (Exception e) {
-            return "Error fetching weather data: " + e.getMessage();
+            return ResponseEntity.status(500).body("{\"message\": \"Internal Server Error: " + e.getMessage() + "\"}");
         }
     }
-
 }
