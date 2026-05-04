@@ -14,12 +14,11 @@ public class WeatherController {
     private final String apikey = "6baba3bd162ce04b0cf27553c5f3f1a7";
 
     @GetMapping("/weather")
-    public ResponseEntity<String> getWeather(@RequestParam String city) {
-        if (city == null || city.trim().isEmpty()) {
-            return ResponseEntity.badRequest().body("{\"error\": \"City name cannot be empty\"}");
-        }
-
+    public String getWeather(@RequestParam String city) {
         try {
+
+            String apikey = "6baba3bd162ce04b0cf27553c5f3f1a7";
+
             String url = "https://api.openweathermap.org/data/2.5/weather?q="
                     + city.trim() + "&appid=" + apikey + "&units=metric";
 
