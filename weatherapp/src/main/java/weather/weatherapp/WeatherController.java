@@ -12,7 +12,7 @@ public class WeatherController {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    private final String apikey = "6baba3bd162ce04b0cf27553c5f3f1a7";
+    private final String apikey = "Your API Key";
 
     @GetMapping("/weather")
     public ResponseEntity<String> getWeather(@RequestParam String city) {
